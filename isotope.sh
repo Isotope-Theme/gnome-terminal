@@ -6,8 +6,15 @@
 # Based on:
 #   https://github.com/chriskempson/base16-gnome-terminal/
 
-[[ -z "$PROFILE_NAME" ]] && PROFILE_NAME="Isotope_2"
-[[ -z "$PROFILE_SLUG" ]] && PROFILE_SLUG="isotope_2"
+printf "Light or Dark variant [dark]: "
+read var
+
+if [[ $var == "" ]]; then
+  var="dark"
+fi
+
+[[ -z "$PROFILE_NAME" ]] && PROFILE_NAME="Isotope"
+[[ -z "$PROFILE_SLUG" ]] && PROFILE_SLUG="isotope"
 [[ -z "$DCONF" ]] && DCONF=dconf
 [[ -z "$UUIDGEN" ]] && UUIDGEN=uuidgen
 
@@ -64,17 +71,24 @@ if which "$DCONF" > /dev/null 2>&1; then
         # update profile values with theme options
         dset visible-name "'$PROFILE_NAME'"
         dset palette "['#37474F', '#F44336', '#4CAF50', '#FFEB3B', '#2196F3', '#9C27B0', '#00BCD4', '#90A4AE', '#546E7A', '#FF8961', '#80E37E', '#FFFF72', '#6EC6FF', '#D05CD3', '#62EFFF', '#CFD8DC']"
-        dset background-color "'#263238'"
-        dset foreground-color "'#eceff1'"
-        dset bold-color "'#b0bec5'"
         dset bold-color-same-as-fg "true"
         dset use-theme-colors "false"
         dset use-theme-background "false"
+        if [[ $var == "dark" ]]; then
+          dset background-color "'#263238'"
+          dset foreground-color "'#eceff1'"
+          dset bold-color "'#b0bec5'"
+        else
+          dset background-color "'#eceff1'"
+          dset foreground-color "'#263238'"
+          dset bold-color "'#455A64'"
+        fi
 
         unset PROFILE_NAME
         unset PROFILE_SLUG
         unset DCONF
         unset UUIDGEN
+        printf "Installed isotope theme\n"
         exit 0
     fi
 fi
@@ -125,3 +139,5 @@ unset PROFILE_NAME
 unset PROFILE_SLUG
 unset DCONF
 unset UUIDGEN
+
+printf "Installed isotope theme\n"
